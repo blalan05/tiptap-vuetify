@@ -9,68 +9,79 @@
         :editor="$props[PROPS.EDITOR]"
         :dark="$props[PROPS.DARK]"
         :disabled="$props[PROPS.DISABLED]"
+        :remove-tabindex="$props[PROPS.REMOVE_TABINDEX]"
       />
     </template>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import ExtensionActionInterface from '~/extensions/actions/ExtensionActionInterface'
-import ExtensionActionRenderBtnComponent from '~/extensions/actions/renders/btn/ExtensionActionRenderBtn.vue'
-import ExtensionActionRenderBtn from '~/extensions/actions/renders/btn/ExtensionActionRenderBtn.ts'
-import { Editor } from 'tiptap'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import ExtensionActionInterface from "~/extensions/actions/ExtensionActionInterface";
+import ExtensionActionRenderBtnComponent from "~/extensions/actions/renders/btn/ExtensionActionRenderBtn.vue";
+import ExtensionActionRenderBtn from "~/extensions/actions/renders/btn/ExtensionActionRenderBtn.ts";
+import { Editor } from "tiptap";
 
 export const PROPS = {
-  EDITOR: 'editor' as const,
-  ACTIONS: 'actions' as const,
-  CONTEXT: 'context' as const,
-  DARK: 'dark' as const,
-  DISABLED: 'disabled' as const
-}
+  EDITOR: "editor" as const,
+  ACTIONS: "actions" as const,
+  CONTEXT: "context" as const,
+  DARK: "dark" as const,
+  DISABLED: "disabled" as const,
+  REMOVE_TABINDEX: "removeTabindex" as const,
+};
 
 @Component({
   components: {
-    'action-btn': ExtensionActionRenderBtnComponent
-  }
+    "action-btn": ExtensionActionRenderBtnComponent,
+  },
 })
 export default class ActionsRender extends Vue {
   @Prop({ type: Object, required: true })
-  readonly [PROPS.EDITOR]: Editor
+  readonly [PROPS.EDITOR]: Editor;
 
   @Prop({ type: Boolean, default: false })
-  readonly [PROPS.DISABLED]: boolean
+  readonly [PROPS.DISABLED]: boolean;
 
   @Prop({
     type: Array,
-    default: () => []
+    default: () => [],
   })
-  readonly [PROPS.ACTIONS]: ExtensionActionInterface[]
+  readonly [PROPS.ACTIONS]: ExtensionActionInterface[];
 
   @Prop({
-    type: Object
+    type: Object,
   })
-  readonly [PROPS.CONTEXT]: any
+  readonly [PROPS.CONTEXT]: any;
 
   @Prop({
     type: Boolean,
-    default: false
+    default: false,
   })
-  readonly [PROPS.DARK]: boolean
+  readonly [PROPS.DARK]: boolean;
 
-  PROPS = PROPS
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  readonly [PROPS.REMOVE_TABINDEX]: boolean;
 
-  isBtn (action: ExtensionActionInterface): boolean {
-    return action.render instanceof ExtensionActionRenderBtn
+  PROPS = PROPS;
+
+  isBtn(action: ExtensionActionInterface): boolean {
+    return action.render instanceof ExtensionActionRenderBtn;
   }
 }
 </script>
 
 <style lang="stylus">
-  .tiptap-vuetify-editor__toolbar
-    .v-toolbar
-      .v-toolbar__content
-        height: auto !important
-        flex-wrap: wrap
+.tiptap-vuetify-editor__toolbar {
+  .v-toolbar {
+    .v-toolbar__content {
+      height: auto !important;
+      flex-wrap: wrap;
+    }
+  }
+}
 </style>

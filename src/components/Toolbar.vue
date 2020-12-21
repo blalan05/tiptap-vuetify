@@ -1,10 +1,7 @@
 <template>
   <!-- Open/Closed principle https://css-tricks.com/creating-vue-js-component-instances-programmatically/ -->
   <div class="tiptap-vuetify-editor__toolbar">
-    <editor-menu-bar
-      v-slot="menuBarContext"
-      :editor="editor"
-    >
+    <editor-menu-bar v-slot="menuBarContext" :editor="editor">
       <!-- :buttons="buttons" -->
       <slot
         name="default"
@@ -14,7 +11,7 @@
         <v-toolbar
           v-bind="{
             ...toolbarConfig,
-            ...toolbarAttributes
+            ...toolbarAttributes,
           }"
         >
           <actions-render
@@ -22,6 +19,7 @@
             :context="menuBarContext"
             :editor="editor"
             :disabled="disabled"
+            :remove-tabindex="removeTabindex"
           />
         </v-toolbar>
       </slot>
@@ -30,53 +28,62 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
-import { Editor, EditorMenuBar } from 'tiptap'
-import toolbarConfig from '~/configs/toolbar'
-import ExtensionActionInterface from '~/extensions/actions/ExtensionActionInterface'
-import ActionsRender from '~/components/ActionsRender.vue'
-import { VToolbar } from 'vuetify/lib'
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { Editor, EditorMenuBar } from "tiptap";
+import toolbarConfig from "~/configs/toolbar";
+import ExtensionActionInterface from "~/extensions/actions/ExtensionActionInterface";
+import ActionsRender from "~/components/ActionsRender.vue";
+import { VToolbar } from "vuetify/lib";
 
 @Component({
   components: {
     ActionsRender,
     EditorMenuBar,
-    VToolbar
-  }
+    VToolbar,
+  },
 })
 export default class Toolbar extends Vue {
   @Prop({ type: Boolean, default: false })
-  readonly disabled: boolean
+  readonly disabled: boolean;
 
   @Prop({ type: Object, required: true })
-  readonly editor: Editor
+  readonly editor: Editor;
 
   @Prop({
     type: Array,
-    default: () => []
+    default: () => [],
   })
-  readonly actions: ExtensionActionInterface[]
+  readonly actions: ExtensionActionInterface[];
 
   @Prop({
     type: [Array, Object],
-    default: () => ({})
+    default: () => ({}),
   })
-  readonly toolbarAttributes!: any
+  readonly toolbarAttributes!: any;
 
-  readonly toolbarConfig = toolbarConfig
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  readonly removeTabindex: boolean;
+
+  readonly toolbarConfig = toolbarConfig;
 }
 </script>
 
 <style lang="stylus">
-  .tiptap-vuetify-editor__toolbar
-    .v-toolbar
-      display: flex
-      height: auto !important
-      padding: 5px
+.tiptap-vuetify-editor__toolbar {
+  .v-toolbar {
+    display: flex;
+    height: auto !important;
+    padding: 5px;
 
-      .v-toolbar__content
-        height: auto !important
-        flex-wrap: wrap
-        padding: 0
+    .v-toolbar__content {
+      height: auto !important;
+      flex-wrap: wrap;
+      padding: 0;
+    }
+  }
+}
 </style>

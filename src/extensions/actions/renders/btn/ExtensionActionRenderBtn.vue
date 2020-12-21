@@ -7,19 +7,27 @@
         :disabled="disabled"
         :class="{
           'tiptap-vuetify-editor__action-render-btn': true,
-          'v-btn--active': $props[PROPS.OPTIONS].isActive($props[PROPS.CONTEXT])
+          'v-btn--active': $props[PROPS.OPTIONS].isActive(
+            $props[PROPS.CONTEXT]
+          ),
         }"
         :dark="$props[PROPS.DARK]"
-        :tabindex="$props[PROPS.REMOVETABINDEX] ? -1 : 0"
+        :tabindex="$props[PROPS.REMOVE_TABINDEX] ? -1 : 0"
         small
         icon
         v-on="on"
-        @click="options.onClick({ context: $props[PROPS.CONTEXT], editor: $props[PROPS.EDITOR] })"
+        @click="
+          options.onClick({
+            context: $props[PROPS.CONTEXT],
+            editor: $props[PROPS.EDITOR],
+          })
+        "
       >
         <component
           :is="isTextIcon ? 'b' : isVuetifyIcon ? 'v-icon' : null"
           class="tiptap-vuetify-editor__btn-icon"
-        >{{ buttonIcon }}</component>
+          >{{ buttonIcon }}</component
+        >
       </v-btn>
     </template>
     <template>{{ tooltipText }}</template>
@@ -44,7 +52,7 @@ export const PROPS = {
   CONTEXT: "context" as const,
   DARK: "dark" as const,
   DISABLED: "disabled" as const,
-  REMOVETABINDEX: "removeTabindex" as const,
+  REMOVE_TABINDEX: "removeTabindex" as const,
 };
 
 @Component({
@@ -67,7 +75,7 @@ export default class ExtensionActionRenderBtn extends Vue {
   readonly [PROPS.DARK]: boolean;
 
   @Prop({ type: Boolean, default: false })
-  readonly [PROPS.REMOVETABINDEX]: boolean;
+  readonly [PROPS.REMOVE_TABINDEX]: boolean;
 
   PROPS = PROPS;
 
